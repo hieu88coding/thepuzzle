@@ -1,0 +1,39 @@
+.landingContainer{
+    .coverContainer{
+        height: 100%;
+        position: relative;
+        .landingCover{
+            width: 100vw;
+            height: auto;
+            margin-top: 60px;
+            position: relative;
+        }
+        .text-overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            color: white;
+            top:-10px;
+            z-index: 1;
+            background-color: rgba(0, 0, 0, 0.5); 
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4); 
+            display: flex;
+            justify-content: flex-start;
+            .text-content{
+                margin-top: 300px;
+                margin-left: 50px;
+                h1 {
+                    font-size: 36px;
+                    font-weight: bold; 
+                    display: flex;
+                    justify-content: flex-start;
+                    flex-direction: column;
+                    align-items: flex-start;
+                  }
+                  p {
+                    font-size: 18px;
+                  }
+            }
+          }
+    }
+}

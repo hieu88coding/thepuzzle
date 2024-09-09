@@ -1,0 +1,21 @@
+.text-container {
+    display: flex;
+    flex-direction: column;
+   
+    .first-text{
+        opacity: 1;
+        transition: opacity 1s;
+    }
+    
+    .second-text {
+        opacity: 0;
+        transition: opacity 1s;
+        &.show {
+            opacity: 1;
+          }
+      }
+      
+     
+  }
+  
+  
