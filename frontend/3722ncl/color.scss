@@ -1,0 +1,12 @@
+// base
+
+$backgroundColor: (
+    OgJhin: black,
+    HighNoonJhin: orange,
+    BloodMoonJhin: red,
+    DarkCosmicJhin: purple
+);
+@mixin header($selectedAvatar) {
+    $color: map-get($backgroundColor, $selectedAvatar);
+    background-color: $color;
+}

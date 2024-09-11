@@ -1,0 +1,16 @@
+.contactContainer{
+    width: 90%;
+    margin: 0 auto;
+    font-size: 18px;
+    .contactContent{
+       
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        .contactLeft{
+            width: 30%;
+           display: flex;
+           flex-direction: column;
+        }
+    }
+}

@@ -1,0 +1,9 @@
+Import 3D model to page:
+- Models : https://modelviewer.lol/champions/jhin
+- Unselect watermark and chose export as .glb (Entire file) (Also download splashArt as you need)
+- Go to https://gltf.pmnd.rs/ and drop your .glb file here to generate to .jsx file.
+- Copy the code and paste to a empty jsx file.
+
+In case your .glb file is > 20MB (DarkCosmicJhin), or gltf.pmnd.rs out of memory:
+- Go to the folder that has the file and npx gltfjsx model.gltf --transform
+- If is not working: https://github.com/pmndrs/gltfjsx/issues/201

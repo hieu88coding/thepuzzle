@@ -1,7 +1,20 @@
 import React from 'react'
 import './header.scss'
-import { useEffect } from 'react';
-const Header = () => {
+import { useEffect, useState } from 'react';
+import Avatar from 'antd/es/avatar/avatar';
+const Header = (props) => {
+    const [selectedAvatar, setSelectedAvatar] = useState("OgJhin");
+
+    const backgroundColor = {
+        "OgJhin": "black",
+        "HighNoonJhin": "orange",
+        "BloodMoonJhin": "#A92835",
+        "DarkCosmicJhin": "purple"
+    };
+    const handleAvatarClick = (avatarName) => {
+        setSelectedAvatar(avatarName);
+        props.handleChangeState(avatarName);
+    };
     useEffect(() => {
         const handleScroll = () => {
             const header = document.querySelector('.header');
@@ -18,18 +31,26 @@ const Header = () => {
         };
     }, []);
     return (
-        <header className="header">
+        <header className="header" style={{ backgroundColor: backgroundColor[selectedAvatar] }}>
             <nav className="navbar">
                 <div className="logo">
                     {/* Thêm logo hoặc tên */}
                     <a href="#">Hieucao Port4lio</a>
                 </div>
-                <ul className="nav-links">
-                    {/* Các liên kết điều hướng */}
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
+                <div className='nav-links'>
+                    <Avatar
+                        className={selectedAvatar === "OgJhin" ? 'selected-avatar' : ''}
+                        onClick={() => handleAvatarClick("OgJhin")} src="https://cdn.modelviewer.lol/lol/circles/202000.webp" />
+                    <Avatar
+                        className={selectedAvatar === "HighNoonJhin" ? 'selected-avatar' : ''}
+                        onClick={() => handleAvatarClick("HighNoonJhin")} src="https://cdn.modelviewer.lol/lol/circles/202001.webp" />
+                    <Avatar
+                        className={selectedAvatar === "BloodMoonJhin" ? 'selected-avatar' : ''}
+                        onClick={() => handleAvatarClick("BloodMoonJhin")} src="https://cdn.modelviewer.lol/lol/circles/202002.webp" />
+                    <Avatar
+                        className={selectedAvatar === "DarkCosmicJhin" ? 'selected-avatar' : ''}
+                        onClick={() => handleAvatarClick("DarkCosmicJhin")} src="https://cdn.modelviewer.lol/lol/circles/202005.webp" />
+                </div>
             </nav>
         </header>
     );

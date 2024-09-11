@@ -1,6 +1,9 @@
-import { Model } from '../../components/3D/Model';
+import { HighNoonJhin } from '../../components/3D/HighNoonJhin';
+import { OgJhin } from '../../components/3D/OgJhin';
+import { BloodMoonJhin } from '../../components/3D/BloodMoonJhin';
+import { DarkCosmicJhin } from '../../components/3D/DarkCosmicJhin';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, CameraControls, Environment } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera, CameraControls, Environment, Plane } from "@react-three/drei";
 import { Leva } from "leva";
 import { useState, useRef, useEffect } from 'react';
 import * as THREE from 'three';
@@ -12,29 +15,57 @@ import TextAnimation from '../../components/text/TextAnimation';
 import Loading from '../../components/loading/Loading';
 import { Parallax } from 'react-scroll-parallax';
 import { About } from '../../components/about/About';
+import { Introduction } from '../../components/introduction/Introduction';
+import { Hobby } from '../../components/hobby/Hobby';
+import { Project } from '../../components/projects/Project';
+import { Contact } from '../../components/contact/Contact';
+
+const background = {
+    "OgJhin": "/planet.jpg",
+    "HighNoonJhin": "/orange_planet.jpg",
+    "BloodMoonJhin": "/red_planet.jpg",
+    "DarkCosmicJhin": "/dark_cosmic_planet.jpg"
+}
 export default function LandingPage() {
     const [isVideoLoaded, setIsVideoLoaded] = useState(false);
     const [position, setPosition] = useState([0, 0, 0]);
     const [actionType, setActionType] = useState("Run_Fast");
     const controlsRef = useRef();
     const [scrollPosition, setScrollPosition] = useState(0);
+    const [jhinState, setJhinState] = useState("OgJhin");
 
+
+    const handleChangeState = (state) => {
+        setJhinState(state)
+    }
     const handleScroll = () => {
         let scrollY = window.scrollY;
         console.log(window.scrollY);
-        if (scrollY > 1100 && scrollY < 1500) {
+        if (scrollY >= 1000 && scrollY < 1500) {
             moveAndLookAt([0, 1, -3], [0, Math.PI / 2], "Respawn");
             setScrollPosition(scrollY);// Zoom
         } else if (scrollY >= 1500 && scrollY < 2000) {
-            moveAndLookAt([0, 1, 4], [Math.PI, Math.PI / 2], "Recall"); // Move to the back
+            moveAndLookAt([0, 1, 3], [Math.PI, Math.PI / 2], "Recall"); // Move to the back
+            setScrollPosition(scrollY);// Zoom
         } else if (scrollY >= 2000 && scrollY < 2500) {
-            moveAndLookAt([0, 1, -4], [Math.PI / 8, Math.PI / 2], "Idle_Base"); // Move to the right
+            moveAndLookAt([0, 1, -3.5], [Math.PI / 8, Math.PI / 2], "DanceLoop");
+            setScrollPosition(scrollY);// Zoom // Move to the right
         } else if (scrollY >= 2500 && scrollY < 3000) {
-            moveAndLookAt([0, 1, 0], [Math.PI / 4, Math.PI / 2], "Run_Fast"); // Move to the first position
+            moveAndLookAt([0, 1, -3.5], [-Math.PI / 8, Math.PI / 2], "Laugh");
+            setScrollPosition(scrollY);// Zoom // Move to the first position
+        } else if (scrollY >= 3000) {
+            moveAndLookAt([0, 1, 0], [-3 * Math.PI / 4, Math.PI / 2], "Run_Fast");
+            setScrollPosition(scrollY);
         } else {
-            moveAndLookAt([0, 1, 0], [Math.PI / 4, Math.PI / 2], "Idle_Base"); // Move to the first position
+            moveAndLookAt([0, 3, 0], [Math.PI / 4, Math.PI / 2], "Idle_Base");
+            setScrollPosition(scrollY);// Zoom // Move to the first position
         }
     };
+
+    useEffect(() => {
+        console.log("scroll pos", scrollPosition);
+
+    }, [scrollPosition]);
 
     useEffect(() => {
 
@@ -68,31 +99,53 @@ export default function LandingPage() {
             {
                 isVideoLoaded &&
                 <div>
-                    <Header />
+                    <Header jhinState={jhinState} handleChangeState={handleChangeState} />
                     <div className='coverContainer'>
-                        <video muted autoPlay loop className='landingCover' src="/JhinVid.mp4" alt="cover" />
+                        <video muted autoPlay loop className='landingCover' src={`/${jhinState}.mp4`} alt="cover" />
                         <div className="text-overlay">
                             <div className='text-content'>
-                                <TextAnimation />
+                                <TextAnimation jhinState={jhinState} />
                             </div>
 
                         </div>
                     </div>
                     <div style={{ position: 'relative' }}>
-                        <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: 210 }}>
-                            <About scrollY={scrollPosition} />
-                        </Parallax>
-                        <Canvas style={{ height: 500, position: 'sticky', top: '0px' }} shadows>
+                        <Canvas style={{ height: '100vh', position: 'sticky', top: '0px' }} shadows>
                             <Suspense fallback={null}>
+                                <Environment files={background[jhinState]} background />
                                 <CameraControls ref={controlsRef} />
-                                <Model position={position} actionType={actionType} />
+                                {jhinState === "OgJhin" &&
+                                    <OgJhin position={position} actionType={actionType} />
+                                }
+                                {jhinState === "HighNoonJhin" &&
+                                    <HighNoonJhin position={position} actionType={actionType} />
+                                }
+                                {jhinState === "BloodMoonJhin" &&
+                                    <BloodMoonJhin position={position} actionType={actionType} />
+                                }
+                                {jhinState === "DarkCosmicJhin" &&
+                                    <DarkCosmicJhin position={position} actionType={actionType} />
+                                }
                             </Suspense>
-                            <Floor actionType={actionType} />
+                            <Floor jhinState={jhinState} actionType={actionType} />
 
                         </Canvas>
-
+                        <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
+                            <About scrollY={scrollPosition} />
+                        </Parallax>
+                        <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
+                            <Introduction scrollY={scrollPosition} />
+                        </Parallax>
+                        <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
+                            <Hobby scrollY={scrollPosition} />
+                        </Parallax>
+                        <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
+                            <Project scrollY={scrollPosition} />
+                        </Parallax>
+                        <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
+                            <Contact scrollY={scrollPosition} />
+                        </Parallax>
                     </div>
-                    <div style={{ height: '1000px', }}>troll2</div>
                 </div>
             }
         </div>

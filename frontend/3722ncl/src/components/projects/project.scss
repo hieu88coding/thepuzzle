@@ -1,0 +1,23 @@
+.projectContainer{
+    width: 90%;
+    margin: 0 auto;
+    font-size: 18px;
+    .projectContent{
+       
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        .projectLeft{
+           width: 30%;
+           display: flex;
+           flex-direction: column;
+           justify-content: flex-start;
+        }
+        .projectRight{
+            width: 50%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+         }
+    }
+}

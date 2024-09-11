@@ -13,14 +13,20 @@ export const About = (props) => {
     return (
         <div className='aboutContainer'>
             <div className='aboutContent'>
-                <motion.div initial="hidden"
-                    whileInView={props.scrollY >= 900 ? "visible" : "hidden"}
+                <motion.div
+                    initial="hidden"
+                    whileInView={props.scrollY >= 1000 ? "visible" : "hidden"}
                     viewport={{ once: true, amount: 0.5 }}
                     transition={{ duration: 1 }}
                     variants={{
                         hidden: { opacity: 0, x: -50 },
                         visible: { opacity: 1, x: 0 },
-                    }} className='aboutLeft'>
+                    }}
+                    className='aboutLeft'
+                // style={{
+                //     display: props.scrollY >= 1100 ? "" : "none",
+                // }}
+                >
                     <Card
                         hoverable
 
@@ -31,17 +37,19 @@ export const About = (props) => {
 
                 </motion.div>
                 <motion.div initial="hidden"
-                    whileInView={props.scrollY >= 900 ? "visible" : "hidden"}
+                    whileInView={props.scrollY >= 1000 ? "visible" : "hidden"}
                     viewport={{ once: true, amount: 0.5 }}
                     transition={{ duration: 1 }}
                     variants={{
                         hidden: { opacity: 0, x: 50 },
                         visible: { opacity: 1, x: 0 },
-                    }} className='aboutLeft'>
+                    }}
+                    // style={{ display: props.scrollY >= 1100 ? "" : "none" }}
+                    className='aboutLeft'>
                     <Card style={{ marginBottom: 20, fontSize: 18 }} hoverable title={null}>
-                        `"This is my Port4lio, heavily inspired by Jhin - a champion from
+                        "This is my Port4lio, heavily inspired by Jhin - a champion from
                         the game LoL. I created this project to test some 3D tools to animate the website,
-                        such as ThreeJS and React Three Fiber. More about me below: "`
+                        such as ThreeJS and React Three Fiber. More about me below: "
                     </Card>
                     <Card hoverable title={null}>
                         <div style={{ margin: '0 auto', width: '80%' }}>

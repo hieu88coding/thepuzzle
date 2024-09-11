@@ -1,0 +1,23 @@
+.introductionContainer{
+    width: 90%;
+    margin: 0 auto;
+    font-size: 18px;
+    .introductionContent{
+       
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        .introductionLeft{
+           width: 30%;
+           display: flex;
+           flex-direction: column;
+           justify-content: flex-start;
+        }
+        .introductionRight{
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            //justify-content: flex-start;
+         }
+    }
+}
