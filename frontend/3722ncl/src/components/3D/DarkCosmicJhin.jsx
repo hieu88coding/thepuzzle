@@ -32,38 +32,37 @@ export function DarkCosmicJhin(props) {
             <group name="AuxScene">
                 <group position={props.position}>
                     <group name="Meshes" scale={[-0.009, 0.009, 0.009]}>
-                        <skinnedMesh
-                            name="mesh_0_2"
-                            geometry={nodes.mesh_0_2.geometry}
-                            material={materials.Base_mat}
-                            skeleton={nodes.mesh_0_2.skeleton}
-                            position={[0.922, -0.084, -2.026]}
-                            scale={0.012}
-                        />
-                        <skinnedMesh
-                            name="mesh_0_4"
-                            geometry={nodes.mesh_0_4.geometry}
-                            material={materials.Head_Normal_mat}
-                            skeleton={nodes.mesh_0_4.skeleton}
-                            position={[0.922, -0.084, -2.026]}
-                            scale={0.012}
-                        />
-                        <skinnedMesh
-                            name="mesh_0_5"
-                            geometry={nodes.mesh_0_5.geometry}
-                            material={materials.Cloth_mat}
-                            skeleton={nodes.mesh_0_5.skeleton}
-                            position={[0.922, -0.084, -2.026]}
-                            scale={0.012}
-                        />
-                        <skinnedMesh
-                            name="mesh_0_6"
-                            geometry={nodes.mesh_0_6.geometry}
-                            material={materials.Shoulder_mat}
-                            skeleton={nodes.mesh_0_6.skeleton}
-                            position={[0.922, -0.084, -2.026]}
-                            scale={0.012}
-                        />
+                        <group position={[0.922, -0.084, -2.026]} scale={0.012}>
+                            <skinnedMesh
+                                name="mesh_0_2"
+                                geometry={nodes.mesh_0_2.geometry}
+                                material={materials.Base_mat}
+                                skeleton={nodes.mesh_0_2.skeleton}
+
+                            />
+                            <skinnedMesh
+                                name="mesh_0_4"
+                                geometry={nodes.mesh_0_4.geometry}
+                                material={materials.Head_Normal_mat}
+                                skeleton={nodes.mesh_0_4.skeleton}
+
+                            />
+                            <skinnedMesh
+                                name="mesh_0_5"
+                                geometry={nodes.mesh_0_5.geometry}
+                                material={materials.Cloth_mat}
+                                skeleton={nodes.mesh_0_5.skeleton}
+
+                            />
+                            <skinnedMesh
+                                name="mesh_0_6"
+                                geometry={nodes.mesh_0_6.geometry}
+                                material={materials.Shoulder_mat}
+                                skeleton={nodes.mesh_0_6.skeleton}
+                                position={[0.922, -0.084, -2.026]}
+                                scale={0.012}
+                            />
+                        </group>
                     </group>
                     <group name="Skeleton" scale={[-0.009, 0.009, 0.009]}>
                         <primitive object={nodes.Root} />

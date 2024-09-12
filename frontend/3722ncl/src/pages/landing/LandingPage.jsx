@@ -3,9 +3,8 @@ import { OgJhin } from '../../components/3D/OgJhin';
 import { BloodMoonJhin } from '../../components/3D/BloodMoonJhin';
 import { DarkCosmicJhin } from '../../components/3D/DarkCosmicJhin';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, CameraControls, Environment, Plane } from "@react-three/drei";
+import { CameraControls, Environment, BakeShadows, AdaptiveDpr, AdaptiveEvents, Preload } from "@react-three/drei";
 import { useState, useRef, useEffect } from 'react';
-import * as THREE from 'three';
 import { Suspense } from 'react';
 import Floor from '../../components/floor/Floor';
 import Header from '../../components/header/Header';
@@ -24,7 +23,7 @@ import {
     listAll,
 } from "firebase/storage";
 import { storage } from '../../../firebase'
-import axios from "axios";
+
 const background = {
     "OgJhin": "/planet.jpg",
     "HighNoonJhin": "/orange_planet.jpg",
@@ -32,7 +31,6 @@ const background = {
     "DarkCosmicJhin": "/dark_cosmic_planet.jpg"
 }
 export default function LandingPage() {
-    const [isVideoLoaded, setIsVideoLoaded] = useState(false);
     const [position, setPosition] = useState([0, 0, 0]);
     const [actionType, setActionType] = useState("Run_Fast");
     const controlsRef = useRef();
@@ -48,7 +46,7 @@ export default function LandingPage() {
         });
         let imagesUrls = await Promise.all(
             imageRefs.items.map(async (exelRef) => {
-                const url = await getDownloadURL(exelRef); // Tải xuống từng ảnh
+                const url = await getDownloadURL(exelRef);
                 return url;
             })
         );
@@ -83,24 +81,27 @@ export default function LandingPage() {
     }
     const handleScroll = () => {
         let scrollY = window.scrollY;
-        if (scrollY >= 1000 && scrollY < 1500) {
+        if (scrollY >= 500 && scrollY < 1000) {
+            moveAndLookAt([0, 3, 0], [Math.PI / 4, Math.PI / 2], "Idle_Base");
+            setScrollPosition(scrollY);
+        }
+        else if (scrollY >= 1000 && scrollY < 1500) {
             moveAndLookAt([0, 1, -3], [0, Math.PI / 2], "Respawn");
-            setScrollPosition(scrollY);// Zoom
+            setScrollPosition(scrollY);
         } else if (scrollY >= 1500 && scrollY < 2000) {
-            moveAndLookAt([0, 1, 3], [Math.PI, Math.PI / 2], "Recall"); // Move to the back
-            setScrollPosition(scrollY);// Zoom
+            moveAndLookAt([0, 1, 3], [Math.PI, Math.PI / 2], "Recall");
+            setScrollPosition(scrollY);
         } else if (scrollY >= 2000 && scrollY < 2500) {
             moveAndLookAt([0, 1, -3.5], [Math.PI / 8, Math.PI / 2], "DanceLoop");
-            setScrollPosition(scrollY);// Zoom // Move to the right
+            setScrollPosition(scrollY);
         } else if (scrollY >= 2500 && scrollY < 3000) {
             moveAndLookAt([0, 1, -3.5], [-Math.PI / 8, Math.PI / 2], "Laugh");
-            setScrollPosition(scrollY);// Zoom // Move to the first position
+            setScrollPosition(scrollY);
         } else if (scrollY >= 3000) {
             moveAndLookAt([0, 1, 0], [-3 * Math.PI / 4, Math.PI / 2], "Run_Fast");
             setScrollPosition(scrollY);
         } else {
-            moveAndLookAt([0, 3, 0], [Math.PI / 4, Math.PI / 2], "Idle_Base");
-            setScrollPosition(scrollY);// Zoom // Move to the first position
+
         }
     };
 
@@ -109,22 +110,10 @@ export default function LandingPage() {
 
         window.addEventListener('scroll', handleScroll);
 
-        // Cleanup function to remove the event listener
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, [window.scrollY]);
-
-    useEffect(() => {
-        // if (isVideoLoaded) {
-        //     setIsVideoLoaded(false);
-        // }
-        const timer = setTimeout(() => {
-            setIsVideoLoaded(true);
-        }, 5000); // Thay đổi thời gian đợi tùy ý
-
-        return () => clearTimeout(timer);
-    }, [jhinState]);
 
     const moveAndLookAt = (position, target, type) => {
         controlsRef.current.moveTo(position[0], position[1], position[2], true);
@@ -133,61 +122,70 @@ export default function LandingPage() {
     };
     return (
         <div className="landingContainer" id='landingContainer'>
-            {!isVideoLoaded &&
-                <Loading />
-            }
-            {
-                isVideoLoaded &&
-                <div>
-                    <Header jhinState={jhinState} handleChangeState={handleChangeState} />
-                    <div className='coverContainer'>
-                        <video muted autoPlay loop className='landingCover' src={data && `${data[jhinState]?.splash}`} alt="cover" />
-                        <div className="text-overlay">
-                            <div className='text-content'>
-                                <TextAnimation jhinState={jhinState} />
-                            </div>
 
+            <div>
+                <Header jhinState={jhinState} handleChangeState={handleChangeState} />
+                <div className='coverContainer'>
+                    <Suspense fallback={<Loading />}>
+                        <video preload='true' muted autoPlay loop className='landingCover' src={data && `${data[jhinState]?.splash}`} alt="cover" />
+                    </Suspense>
+                    <div className="text-overlay">
+                        <div className='text-content'>
+                            <TextAnimation jhinState={jhinState} />
                         </div>
+
                     </div>
-                    <div style={{ position: 'relative' }}>
+                </div>
+                <div style={{ position: 'relative' }}>
+                    <Suspense fallback={<Loading />}>
                         <Canvas style={{ height: '100vh', position: 'sticky', top: '0px' }} shadows>
-                            <Suspense fallback={null}>
-                                <Environment files={background[jhinState]} background />
-                                <CameraControls ref={controlsRef} />
-                                {jhinState === "OgJhin" && data &&
-                                    <OgJhin model={`${data[jhinState]?.model}`} position={position} actionType={actionType} />
-                                }
-                                {jhinState === "HighNoonJhin" && data &&
-                                    <HighNoonJhin model={`${data[jhinState]?.model}`} position={position} actionType={actionType} />
-                                }
-                                {jhinState === "BloodMoonJhin" && data &&
-                                    <BloodMoonJhin model={`${data[jhinState]?.model}`} position={position} actionType={actionType} />
-                                }
-                                {jhinState === "DarkCosmicJhin" && data &&
-                                    <DarkCosmicJhin model={`${data[jhinState]?.model}`} position={position} actionType={actionType} />
-                                }
-                            </Suspense>
+
+                            <Environment files={background[jhinState]} background />
+                            <CameraControls ref={controlsRef} />
+                            {/* Automatically adjusts DPR based on performance */}
+                            <AdaptiveDpr pixelated />
+                            {/* Automatically adjusts events resolution */}
+                            <AdaptiveEvents />
+                            {/* Bakes the shadows */}
+                            <BakeShadows />
+                            {/* Preload important assets */}
+                            <Preload all />
+
+                            {jhinState === "OgJhin" && data.length !== 0 &&
+                                <OgJhin model={`${data[jhinState]?.model}`} position={position} actionType={actionType} />
+                            }
+                            {jhinState === "HighNoonJhin" && data &&
+                                <HighNoonJhin model={`${data[jhinState]?.model}`} position={position} actionType={actionType} />
+                            }
+                            {jhinState === "BloodMoonJhin" && data &&
+                                <BloodMoonJhin model={`${data[jhinState]?.model}`} position={position} actionType={actionType} />
+                            }
+                            {jhinState === "DarkCosmicJhin" && data &&
+                                <DarkCosmicJhin model={`${data[jhinState]?.model}`} position={position} actionType={actionType} />
+                            }
+
                             <Floor jhinState={jhinState} actionType={actionType} />
 
                         </Canvas>
-                        <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
-                            <About scrollY={scrollPosition} />
-                        </Parallax>
-                        <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
-                            <Introduction scrollY={scrollPosition} />
-                        </Parallax>
-                        <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
-                            <Hobby scrollY={scrollPosition} />
-                        </Parallax>
-                        <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
-                            <Project scrollY={scrollPosition} />
-                        </Parallax>
-                        <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
-                            <Contact scrollY={scrollPosition} />
-                        </Parallax>
-                    </div>
+                    </Suspense>
+                    <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
+                        <About scrollY={scrollPosition} />
+                    </Parallax>
+                    <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
+                        <Introduction scrollY={scrollPosition} />
+                    </Parallax>
+                    <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
+                        <Hobby scrollY={scrollPosition} />
+                    </Parallax>
+                    <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
+                        <Project scrollY={scrollPosition} />
+                    </Parallax>
+                    <Parallax speed={50} style={{ position: 'relative', zIndex: 1, top: -450 }}>
+                        <Contact scrollY={scrollPosition} />
+                    </Parallax>
                 </div>
-            }
+            </div>
+
         </div>
     );
 }

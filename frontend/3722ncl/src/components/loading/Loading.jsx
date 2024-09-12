@@ -7,6 +7,7 @@ const Loading = () => {
     return (
         <div >
             <Spin indicator={<LoadingOutlined spin />} size="large" />
+            <div style={{ fontSize: 30, marginTop: 20 }}>Loading...</div>
         </div>
     );
 };
