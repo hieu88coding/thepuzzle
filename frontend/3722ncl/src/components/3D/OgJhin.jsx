@@ -8,8 +8,6 @@ export function OgJhin(props) {
     const group = useRef()
     const { nodes, materials, animations } = useGLTF('/jhin.glb')
     const { actions } = useAnimations(animations, group)
-    console.log(actions);
-    console.log(materials);
     useEffect(() => {
         for (const key in actions) {
             actions[key].stop();

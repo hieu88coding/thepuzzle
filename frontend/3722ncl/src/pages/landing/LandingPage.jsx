@@ -4,7 +4,6 @@ import { BloodMoonJhin } from '../../components/3D/BloodMoonJhin';
 import { DarkCosmicJhin } from '../../components/3D/DarkCosmicJhin';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, CameraControls, Environment, Plane } from "@react-three/drei";
-import { Leva } from "leva";
 import { useState, useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { Suspense } from 'react';
@@ -19,7 +18,13 @@ import { Introduction } from '../../components/introduction/Introduction';
 import { Hobby } from '../../components/hobby/Hobby';
 import { Project } from '../../components/projects/Project';
 import { Contact } from '../../components/contact/Contact';
-
+import {
+    ref,
+    getDownloadURL,
+    listAll,
+} from "firebase/storage";
+import { storage } from '../../../firebase'
+import axios from "axios";
 const background = {
     "OgJhin": "/planet.jpg",
     "HighNoonJhin": "/orange_planet.jpg",
@@ -33,6 +38,40 @@ export default function LandingPage() {
     const controlsRef = useRef();
     const [scrollPosition, setScrollPosition] = useState(0);
     const [jhinState, setJhinState] = useState("OgJhin");
+    const [data, setData] = useState([]);
+    const fetchData = async () => {
+        let imageRefs = await listAll(ref(storage, `/`));
+        imageRefs.items.sort((a, b) => {
+            if (a.name < b.name) return -1;
+            if (a.name > b.name) return 1;
+            return 0;
+        });
+        let imagesUrls = await Promise.all(
+            imageRefs.items.map(async (exelRef) => {
+                const url = await getDownloadURL(exelRef); // Tải xuống từng ảnh
+                return url;
+            })
+        );
+        console.log(imagesUrls);
+        setData({
+            "OgJhin": {
+                splash: imagesUrls[4],
+            },
+            "HighNoonJhin": {
+                splash: imagesUrls[3],
+            },
+            "BloodMoonJhin": {
+                splash: imagesUrls[0],
+            },
+            "DarkCosmicJhin": {
+                splash: imagesUrls[2],
+            },
+        });
+    };
+    useEffect(() => {
+        fetchData();
+        console.log(data);
+    }, []);
 
 
     const handleChangeState = (state) => {
@@ -40,7 +79,6 @@ export default function LandingPage() {
     }
     const handleScroll = () => {
         let scrollY = window.scrollY;
-        console.log(window.scrollY);
         if (scrollY >= 1000 && scrollY < 1500) {
             moveAndLookAt([0, 1, -3], [0, Math.PI / 2], "Respawn");
             setScrollPosition(scrollY);// Zoom
@@ -62,10 +100,6 @@ export default function LandingPage() {
         }
     };
 
-    useEffect(() => {
-        console.log("scroll pos", scrollPosition);
-
-    }, [scrollPosition]);
 
     useEffect(() => {
 
@@ -86,7 +120,6 @@ export default function LandingPage() {
     }, []);
 
     const moveAndLookAt = (position, target, type) => {
-        console.log(type);
         controlsRef.current.moveTo(position[0], position[1], position[2], true);
         controlsRef.current.rotateTo(target[0], target[1], true);
         setActionType(type);
@@ -101,7 +134,7 @@ export default function LandingPage() {
                 <div>
                     <Header jhinState={jhinState} handleChangeState={handleChangeState} />
                     <div className='coverContainer'>
-                        <video muted autoPlay loop className='landingCover' src={`/${jhinState}.mp4`} alt="cover" />
+                        <video muted autoPlay loop className='landingCover' src={data && `${data[jhinState]?.splash}`} alt="cover" />
                         <div className="text-overlay">
                             <div className='text-content'>
                                 <TextAnimation jhinState={jhinState} />
