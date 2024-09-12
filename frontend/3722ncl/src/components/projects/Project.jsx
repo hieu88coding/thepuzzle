@@ -26,12 +26,12 @@ export const Project = (props) => {
                     <Card
                         cover={<img width={"100%"} height={200} alt="example" src="/lotus.png" />}
                         style={{ marginTop: 50, fontSize: 18, textAlign: 'end', height: '300px', width: '40%' }} hoverable title={null}>
-                        <a title='Github' src="https://github.com/hieu88coding/toeic_app_frontend">Toeic App</a>
+                        <a title='Github' href="https://github.com/hieu88coding/toeic_app_frontend">Toeic App</a>
                     </Card>
                     <Card
                         cover={<img width={"100%"} height={200} alt="example" src="/lotus.png" />}
                         style={{ marginTop: 100, fontSize: 18, textAlign: 'end', height: '300px', width: '40%' }} hoverable title={null}>
-                        <a title='Github' src="https://github.com/HaiHoangND/frontend_mockshipping">Shipping App</a>
+                        <a title='Github' href="https://github.com/HaiHoangND/frontend_mockshipping">Shipping App</a>
                     </Card>
                 </motion.div>
                 <motion.div initial="hidden"
@@ -43,8 +43,8 @@ export const Project = (props) => {
                         visible: { opacity: 1, x: 0 },
                     }} className='projectLeft'>
 
-                    <div style={{ marginBottom: 20, fontSize: 20, fontWeight: 'bold', textAlign: 'right' }}>
-                        Project
+                    <div style={{ color: 'white', marginBottom: 20, fontSize: 20, fontWeight: 'bold', textAlign: 'right' }}>
+                        PROJECT
                     </div>
 
 

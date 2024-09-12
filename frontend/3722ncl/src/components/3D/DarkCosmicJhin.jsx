@@ -7,7 +7,7 @@ import { useGLTF, useAnimations } from '@react-three/drei'
 
 export function DarkCosmicJhin(props) {
     const group = useRef()
-    const { nodes, materials, animations } = useGLTF('/DarkCosmicJhin-transformed.glb')
+    const { nodes, materials, animations } = useGLTF(`${props.model}`)
     const { actions } = useAnimations(animations, group)
     useEffect(() => {
         for (const key in actions) {

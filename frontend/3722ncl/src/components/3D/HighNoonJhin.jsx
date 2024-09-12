@@ -9,7 +9,7 @@ import { useFrame } from '@react-three/fiber';
 
 export function HighNoonJhin(props) {
     const group = useRef()
-    const { nodes, materials, animations } = useGLTF('/high_noon_jhin.glb')
+    const { nodes, materials, animations } = useGLTF(`${props.model}`)
     const { actions } = useAnimations(animations, group)
     useEffect(() => {
         for (const key in actions) {

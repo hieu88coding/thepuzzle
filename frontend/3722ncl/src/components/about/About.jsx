@@ -58,28 +58,28 @@ export const About = (props) => {
                                     scale: 1.2,
                                     transition: { duration: 0.2 },
                                 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-                                    <UserOutlined onClick={() => scrollTo(1500)} />
+                                    <UserOutlined onClick={() => scrollTo(1550)} />
                                     <div>About</div>
                                 </motion.div>
                                 <motion.div whileHover={{
                                     scale: 1.2,
                                     transition: { duration: 0.2 },
                                 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-                                    <FireOutlined onClick={() => scrollTo(2000)} />
+                                    <FireOutlined onClick={() => scrollTo(2050)} />
                                     <div>Hobby</div>
                                 </motion.div>
                                 <motion.div whileHover={{
                                     scale: 1.2,
                                     transition: { duration: 0.2 },
                                 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-                                    <AimOutlined onClick={() => scrollTo(2500)} />
+                                    <AimOutlined onClick={() => scrollTo(2550)} />
                                     <div>Projects</div>
                                 </motion.div>
                                 <motion.div whileHover={{
                                     scale: 1.2,
                                     transition: { duration: 0.2 },
                                 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-                                    <PhoneOutlined onClick={() => scrollTo(3000)} />
+                                    <PhoneOutlined onClick={() => scrollTo(3050)} />
                                     <div>Contacts</div>
                                 </motion.div>
                             </div>

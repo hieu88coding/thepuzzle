@@ -6,6 +6,9 @@ import { motion } from "framer-motion"
 import { useRef, useState, useEffect } from 'react';
 import { GithubOutlined, FacebookOutlined, InstagramOutlined, UpCircleTwoTone } from '@ant-design/icons';
 export const Contact = (props) => {
+    const redirect = (link) => {
+        window.location.href = link; // Scrolling to 100px from the top of the page.
+    };
     const scrollTo = (to) => {
         scroll.scrollTo(to); // Scrolling to 100px from the top of the page.
     };
@@ -31,21 +34,21 @@ export const Contact = (props) => {
                                     scale: 1.2,
                                     transition: { duration: 0.2 },
                                 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-                                    <GithubOutlined onClick={() => scrollTo(1500)} />
+                                    <GithubOutlined onClick={() => redirect('https://github.com/hieu88coding')} />
                                     <div>Github</div>
                                 </motion.div>
                                 <motion.div whileHover={{
                                     scale: 1.2,
                                     transition: { duration: 0.2 },
                                 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-                                    <FacebookOutlined onClick={() => scrollTo(2000)} />
+                                    <FacebookOutlined onClick={() => redirect('https://www.facebook.com/profile.php?id=100008310914900')} />
                                     <div>Facebook</div>
                                 </motion.div>
                                 <motion.div whileHover={{
                                     scale: 1.2,
                                     transition: { duration: 0.2 },
                                 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-                                    <InstagramOutlined onClick={() => scrollTo(2500)} />
+                                    <InstagramOutlined onClick={() => redirect('https://www.instagram.com/bhie_u_/')} />
                                     <div>Instagram</div>
                                 </motion.div>
                                 <motion.div whileHover={{

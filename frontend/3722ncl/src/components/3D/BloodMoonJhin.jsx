@@ -6,7 +6,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 export function BloodMoonJhin(props) {
     const group = useRef()
-    const { nodes, materials, animations } = useGLTF('/blood_moon_jhin.glb')
+    const { nodes, materials, animations } = useGLTF(`${props.model}`)
     const { actions } = useAnimations(animations, group)
     useEffect(() => {
         for (const key in actions) {

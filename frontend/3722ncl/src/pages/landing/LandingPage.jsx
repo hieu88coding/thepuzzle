@@ -56,15 +56,19 @@ export default function LandingPage() {
         setData({
             "OgJhin": {
                 splash: imagesUrls[4],
+                model: imagesUrls[7],
             },
             "HighNoonJhin": {
                 splash: imagesUrls[3],
+                model: imagesUrls[6],
             },
             "BloodMoonJhin": {
                 splash: imagesUrls[0],
+                model: imagesUrls[5],
             },
             "DarkCosmicJhin": {
                 splash: imagesUrls[2],
+                model: imagesUrls[1],
             },
         });
     };
@@ -112,12 +116,15 @@ export default function LandingPage() {
     }, [window.scrollY]);
 
     useEffect(() => {
+        // if (isVideoLoaded) {
+        //     setIsVideoLoaded(false);
+        // }
         const timer = setTimeout(() => {
             setIsVideoLoaded(true);
-        }, 1000); // Thay đổi thời gian đợi tùy ý
+        }, 5000); // Thay đổi thời gian đợi tùy ý
 
         return () => clearTimeout(timer);
-    }, []);
+    }, [jhinState]);
 
     const moveAndLookAt = (position, target, type) => {
         controlsRef.current.moveTo(position[0], position[1], position[2], true);
@@ -147,17 +154,17 @@ export default function LandingPage() {
                             <Suspense fallback={null}>
                                 <Environment files={background[jhinState]} background />
                                 <CameraControls ref={controlsRef} />
-                                {jhinState === "OgJhin" &&
-                                    <OgJhin position={position} actionType={actionType} />
+                                {jhinState === "OgJhin" && data &&
+                                    <OgJhin model={`${data[jhinState]?.model}`} position={position} actionType={actionType} />
                                 }
-                                {jhinState === "HighNoonJhin" &&
-                                    <HighNoonJhin position={position} actionType={actionType} />
+                                {jhinState === "HighNoonJhin" && data &&
+                                    <HighNoonJhin model={`${data[jhinState]?.model}`} position={position} actionType={actionType} />
                                 }
-                                {jhinState === "BloodMoonJhin" &&
-                                    <BloodMoonJhin position={position} actionType={actionType} />
+                                {jhinState === "BloodMoonJhin" && data &&
+                                    <BloodMoonJhin model={`${data[jhinState]?.model}`} position={position} actionType={actionType} />
                                 }
-                                {jhinState === "DarkCosmicJhin" &&
-                                    <DarkCosmicJhin position={position} actionType={actionType} />
+                                {jhinState === "DarkCosmicJhin" && data &&
+                                    <DarkCosmicJhin model={`${data[jhinState]?.model}`} position={position} actionType={actionType} />
                                 }
                             </Suspense>
                             <Floor jhinState={jhinState} actionType={actionType} />
